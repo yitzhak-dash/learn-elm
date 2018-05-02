@@ -1,31 +1,57 @@
-import Html exposing (Html, button, div, text)
-import Html.Events exposing(onClick)
+module Main exposing (..)
 
-main = Html.beginnerProgram {model = model, view = view, update = update }
+import Html exposing (Html, button, div, text)
+import Html.Events exposing (onClick)
+
+
+main =
+    Html.beginnerProgram { model = model, view = view, update = update }
+
+
 
 -- MODEL
-type alias Model = Int
+
+
+type alias Model =
+    Int
+
+
 model : Model
-model = 0
+model =
+    0
+
+
 
 -- UPDATE
-type Msg = Increment | Decrement | Reset
+
+
+type Msg
+    = Increment
+    | Decrement
+    | Reset
+
+
 update : Msg -> Model -> Model
 update msg model =
     case msg of
         Increment ->
             model + 1
+
         Decrement ->
             model - 1
+
         Reset ->
             0
 
+
+
 -- VIEW
+
+
 view : Model -> Html Msg
-view model  =
+view model =
     div []
-        [
-            button [ onClick Decrement ] [ text "-" ],
-            div[] [button [ onClick Reset ] [ text (toString model)]],
-            button [ onClick Increment] [ text "+"]
+        [ button [ onClick Decrement ] [ text "-" ]
+        , div [] [ button [ onClick Reset ] [ text (toString model) ] ]
+        , button [ onClick Increment ] [ text "+" ]
         ]

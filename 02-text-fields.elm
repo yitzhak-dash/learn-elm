@@ -1,37 +1,49 @@
-import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
+module Main exposing (..)
+
+import Html exposing (Html, Attribute, input, div, text)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onInput)
 
 
-main = Html.beginnerProgram { model = model, view = view, update = update }
+main =
+    Html.beginnerProgram { model = model, view = view, update = update }
+
 
 
 -- MODEL
 
-type alias Model = Int
+
+type alias Model =
+    { content : String }
+
 
 model : Model
-model = 0
+model =
+    { content = "" }
+
 
 
 -- UPDATE
 
-type Msg = Increment | Decrement
+
+type Msg
+    = Change String
+
 
 update : Msg -> Model -> Model
 update msg model =
-  case msg of
-    Increment ->
-      model + 2
-    Decrement ->
-      model - 2
+    case msg of
+        Change newContent ->
+            { model | content = newContent }
+
 
 
 -- VIEW
 
+
 view : Model -> Html Msg
 view model =
-  div []
-    [ button [ onClick Decrement ] [ text "-" ]
-    , div [] [ text (toString model) ]
-    , button [ onClick Increment ] [ text "+" ]
-    ]
+    div []
+        [ input [ placeholder "Text to recieve", onInput Change ] []
+        , div [] [ text (String.toUpper (String.reverse model.content)) ]
+        ]
