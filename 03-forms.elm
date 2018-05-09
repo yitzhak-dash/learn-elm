@@ -3,6 +3,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
+import Regex
 
 
 main =
@@ -59,11 +60,18 @@ view model =
         , viewValidation model
         ]
 
+pattern = Regex.regex "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$"
+
 viewValidation : Model -> Html msg
 viewValidation model =
     let
         (color, message) =
-            if model.password == model.passwordAgain then ("green", "OK")
-            else ("red", "Password do not mutch")
+            if model.password /= model.passwordAgain
+                then ("red", "Password do not mutch")
+            else if not (Regex.contains pattern model.password)
+                then ("red", "the password should contains upper case, lower case, and numeric characters")
+            else if String.length model.password < 8
+                then ("red", "Password is not longer than 8 characters")
+            else ("green", "OK")
     in
         div [ style [("color", color)]][text message]
