@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, onClick)
 import Regex
 
 
@@ -19,12 +19,13 @@ type alias Model =
     , password : String
     , passwordAgain : String
     , age : String
+    , errors: List String
     }
 
 
 model : Model
 model =
-    Model "" "" "" ""
+    Model "" "" "" "" []
 
 
 
@@ -36,6 +37,7 @@ type Msg
     | Password String
     | PasswordAgain String
     | Age String
+    | Submit
 
 
 update : Msg -> Model -> Model
@@ -53,6 +55,9 @@ update msg model =
         Age age ->
             { model | age = age }
 
+        Submit ->
+            { model | errors = ["Br....."] }
+
 -- VIEW
 
 
@@ -63,6 +68,8 @@ view model =
         , input [ type_ "password", placeholder "Password", onInput Password ] []
         , input [ type_ "password", placeholder "Re-enter Password", onInput PasswordAgain ] []
         , input [ type_ "number", placeholder "Age", onInput Age ] []
+        , button [ onClick Submit] [text "Submit"]
+        , div [ style [("color", "red")]] [text (toString model.errors)]
         , viewValidation model
         ]
 
